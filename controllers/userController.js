@@ -3,15 +3,16 @@ var expressAsyncHandler = require('express-async-handler');
 var User = require('../models/userModel.js')
 var generateToken = require('../utils.js')
 const multer  = require('multer')
+const dotenv = require("dotenv");
+dotenv.config(); 
+const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+}); 
 
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, './uploads/');
-  },
-  filename: function(req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
-  }
-});
+const storage = multer.diskStorage({});
 
 const fileFilter = (req, file, cb) => {
   // reject a file
@@ -67,11 +68,15 @@ module.exports = function(app){
     }]),expressAsyncHandler(async(req,res)=>{
       try{
         const _id = req.params.id;
+        const aadhar =  await cloudinary.uploader.upload(req.files.aadharCopy[0].path);
+        const fssai = await cloudinary.uploader.upload(req.files.fssaiCertificate[0].path);
         const update = await User.findByIdAndUpdate(_id,
           {aadharNumber: req.body.aadharNumber,
-        aadharCopy: req.files.aadharCopy[0].path,
+        aadharCopyAvatar: aadhar.secure_url,
+        aadharCopyId: aadhar.public_id,
         fssaiNumber: req.body.fssaiNumber,
-        fssaiCertificate : req.files.fssaiCertificate[0].path} );
+        fssaiCertificateAvatar : fssai.secure_url,
+        fssaiCertificateId: fssai.public_id  });
         res.status(201).json({
           message: "Created user successfully",
           createdUser: {

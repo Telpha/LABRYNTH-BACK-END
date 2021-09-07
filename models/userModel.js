@@ -9,9 +9,11 @@ const userSchema = new mongoose.Schema(
         //dob : { type: Date,required:true, default: Date.now },
         role: { type: String, default: 'user' , required: true },
         aadharNumber: {type:Number},
-        aadharCopy:{type:String},
+        aadharCopyAvatar:{type:String},
+        aadharCopyId: {type:String},
         fssaiNumber: {type:Number},
-        fssaiCertificate : {type:String}
+        fssaiCertificateAvatar : {type:String},
+        fssaiCertificateId : {type: String}
 
     });
 module.exports = mongoose.model('User',userSchema);

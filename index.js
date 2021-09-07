@@ -7,6 +7,8 @@ const swaggerUi = require('swagger-ui-express');
 //const swaggerDocument = require('./swagger.json');
 //dotenv.config();
 var userController= require('./controllers/userController');
+const dotenv = require("dotenv");
+dotenv.config(); 
 
 mongoose.connect(
  'mongodb+srv://hanna:testing@123@cluster0.ivmui.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
