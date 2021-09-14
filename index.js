@@ -7,6 +7,7 @@ const swaggerUi = require('swagger-ui-express');
 //const swaggerDocument = require('./swagger.json');
 //dotenv.config();
 var userController= require('./controllers/userController');
+var facilityController = require('./controllers/facilityController');
 const dotenv = require("dotenv");
 dotenv.config(); 
 
@@ -32,6 +33,7 @@ app.use('/uploads', express.static('uploads'));
 app.use(express.urlencoded({extended: true}));
 
 userController(app);
+facilityController(app);
 
 app.listen(3000);
 console.log('You are listening to port 3000');
